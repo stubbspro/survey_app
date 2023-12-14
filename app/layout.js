@@ -11,14 +11,18 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang='en'>
-      <body className={inter.className}>
-        <header className='bg-white py-[28px] px-[80px] flex items-center'>
-          <p className='text-[30px] font-semibold'>LOGO</p>
-          <p className='text-dark-blue mx-auto w-[100%] max-w-[320px] text-[19px] items-center flex justify-center'>
-            Current survey name
-          </p>
+      <body className={`${inter.className} h-screen`}>
+        <header className='bg-white py-[2px] px-[28px] sm:py-[28px] sm:px-[80px]'>
+          <div className='relative flex items-center'>
+            <p className='text-[18px] sm:text-[30px] font-semibold absolute left-0'>
+              LOGO
+            </p>
+            <p className='text-dark-blue mx-auto w-[100%] text-[19px] text-center'>
+              Current survey name
+            </p>
+          </div>
         </header>
-        <div className='w-[100%] max-w-[846px] mx-auto p-[42px] bg-content-wrapper-bg rounded-[6px] border-[1px] border-solid'>
+        <div className='w-[100%] sm:max-w-[846px] mx-auto h-[calc(100%_-_49px)] sm:h-[calc(100%_-_101px)]'>
           {children}
         </div>
       </body>
