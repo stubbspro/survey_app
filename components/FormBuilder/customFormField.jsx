@@ -14,7 +14,11 @@ const CustomFormField = ({ type, field, customField }) => {
     case 'single-select':
     case 'condition':
       return (
-        <RadioGroup onValueChange={field.onChange} defaultValue={field.value}>
+        <RadioGroup
+          className='!mt-[16px]'
+          onValueChange={field.onChange}
+          defaultValue={field.value}
+        >
           {customField.options.map((option) => {
             return (
               <FormItem key={`${field.questionId}-${option.value}`}>

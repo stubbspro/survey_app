@@ -3,7 +3,6 @@ import { google } from 'googleapis';
 import {
   INPUT_PRIMARY_SHEET_NAME,
   INPUT_THERAPY_SHEETY_NAME,
-  MASTER_INPUT_SHEET_NAME,
   OUTPUT_RESULTS_SHEET_NAME,
 } from '@/constants';
 import { generateFieldFromInputSheet } from '@/app/utils/generateFieldFromSheetRow';
@@ -24,17 +23,26 @@ async function getMasterGoogleSpreadSheetRows(route) {
     auth: client,
   });
 
+  const metaData = await googleSheets.spreadsheets.get({
+    auth,
+    spreadsheetId: process.env.MASTER_SPREADSHEET_ID,
+  });
+
+  const masterInputSheetName = metaData.data.sheets[0].properties.title;
+
   const getMasterInputSheet = await googleSheets.spreadsheets.values.get({
     auth,
     spreadsheetId: process.env.MASTER_SPREADSHEET_ID,
-    range: MASTER_INPUT_SHEET_NAME,
+    range: masterInputSheetName,
   });
 
-  const surveySpreadsheetId = getMasterInputSheet?.data.values.find(
+  const surveySpreadsheetRow = getMasterInputSheet?.data.values.find(
     (row) => row[0] === route
-  )?.[2];
+  );
 
-  if (!surveySpreadsheetId) {
+  const [_, surveyName, surveySpreadsheetId] = surveySpreadsheetRow;
+
+  if (!surveySpreadsheetRow) {
     throw new Error('Spreadsheet id is not found');
   }
 
@@ -108,6 +116,7 @@ async function getMasterGoogleSpreadSheetRows(route) {
     userId: +lastUserNumber === 0 ? 1 : +lastUserNumber + 1,
     surveySpreadsheetId,
     screensInfo,
+    surveyName,
   };
 }
 

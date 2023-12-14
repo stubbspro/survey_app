@@ -14,6 +14,7 @@ export default async function getGoogleSpreadSheetsRows(route) {
       surveySpreadsheetId: res?.surveySpreadsheetId,
       screensInfo: res?.screensInfo,
       totalScreens: res?.totalScreens,
+      surveyName: res?.surveyName,
     };
   } catch (e) {
     return notFound();

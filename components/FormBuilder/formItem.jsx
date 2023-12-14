@@ -27,7 +27,7 @@ const FormItem = ({ field }) => {
     case 'therapy-assessment':
       return (
         <div
-          className='text-black font-medium text-[16px] leading-[20px] sm:text-[19px] leading-[34px]'
+          className='text-black font-medium text-[16px] leading-[20px] sm:text-[19px] sm:leading-[34px]'
           dangerouslySetInnerHTML={{ __html: field.text }}
         />
       );
