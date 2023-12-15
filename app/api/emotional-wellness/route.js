@@ -6,6 +6,10 @@ import {
   getColumnName,
 } from '@/app/utils/generateRangeString';
 import { updateCellValue } from '@/app/utils/updateCellValues';
+import path from 'path';
+
+const jsonPath = path.join(process.cwd(), 'credentials.json');
+
 
 async function updateSpreadSheetAfterFirstScreen({
   range,
@@ -14,7 +18,7 @@ async function updateSpreadSheetAfterFirstScreen({
 }) {
   try {
     const auth = new google.auth.GoogleAuth({
-      keyFile: 'credentials.json',
+      keyFile: jsonPath,
       scopes: 'https://www.googleapis.com/auth/spreadsheets',
     });
 
@@ -48,7 +52,7 @@ async function updateSpreadSheetAfterQuestionScreen({
 }) {
   try {
     const auth = new google.auth.GoogleAuth({
-      keyFile: 'credentials.json',
+      keyFile: jsonPath,
       scopes: 'https://www.googleapis.com/auth/spreadsheets',
     });
 
@@ -109,7 +113,7 @@ async function updateSpreadSheetAfterConditionScreen({
 }) {
   try {
     const auth = new google.auth.GoogleAuth({
-      keyFile: 'credentials.json',
+      keyFile: jsonPath,
       scopes: 'https://www.googleapis.com/auth/spreadsheets',
     });
 

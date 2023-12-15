@@ -14,10 +14,14 @@ import { getColumnName } from '@/app/utils/generateRangeString';
 import { updateCellValue } from '@/app/utils/updateCellValues';
 import { getCellValue } from '@/app/utils/getCellValue';
 import { findTherapiesForUser } from '@/app/utils/findTherapiesForUser';
+import path from 'path';
+
+const jsonPath = path.join(process.cwd(), 'credentials.json');
+
 
 async function getTherapy(emotion, surveySpreadsheetId, therapyScreensCount) {
   const auth = new google.auth.GoogleAuth({
-    keyFile: 'credentials.json',
+    keyFile: jsonPath,
     scopes: 'https://www.googleapis.com/auth/spreadsheets',
   });
 
@@ -188,7 +192,7 @@ export async function PUT(req) {
     const { data } = await req.json();
 
     const auth = new google.auth.GoogleAuth({
-      keyFile: 'credentials.json',
+      keyFile: jsonPath,
       scopes: 'https://www.googleapis.com/auth/spreadsheets',
     });
 
