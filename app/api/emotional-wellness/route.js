@@ -10,11 +10,11 @@ import path from 'path';
 
 const jsonPath = path.join(process.cwd(), 'credentials.json');
 
-
 async function updateSpreadSheetAfterFirstScreen({
   range,
-  values,
+  timeSpent,
   spreadsheetId,
+  userId,
 }) {
   try {
     const auth = new google.auth.GoogleAuth({
@@ -29,16 +29,16 @@ async function updateSpreadSheetAfterFirstScreen({
       auth: client,
     });
 
-    await googleSheets.spreadsheets.values.append({
-      spreadsheetId,
-      range,
-      valueInputOption: 'RAW',
-      resource: {
-        values: values,
-      },
-    });
+    const spentTimeRangeString = `${range}!${getColumnName(2)}${userId}`;
+
+    await updateCellValue(
+      googleSheets,
+      spentTimeRangeString,
+      timeSpent,
+      spreadsheetId
+    );
   } catch (e) {
-    console.log('updateSpreadSheetAfterFirstScreen-error:',e);
+    console.log('updateSpreadSheetAfterFirstScreen-error:', e);
   }
 }
 
@@ -147,8 +147,9 @@ export async function POST(req) {
       if (data.screen === 1) {
         await updateSpreadSheetAfterFirstScreen({
           range: OUTPUT_RESULTS_SHEET_NAME,
-          values: [[data.userId, data.timeSpent]],
+          timeSpent: data.timeSpent,
           spreadsheetId: data.spreadsheetId,
+          userId: data.userId + 1,
         });
       } else {
         await updateSpreadSheetAfterQuestionScreen({

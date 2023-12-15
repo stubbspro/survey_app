@@ -79,6 +79,15 @@ async function getMasterGoogleSpreadSheetRows(route) {
     ? outputData.slice(1, outputData.length).length
     : 0;
 
+  await googleSheets.spreadsheets.values.append({
+    spreadsheetId: surveySpreadsheetId,
+    range: OUTPUT_RESULTS_SHEET_NAME,
+    valueInputOption: 'RAW',
+    resource: {
+      values: [[+lastUserNumber === 0 ? 1 : +lastUserNumber + 1]],
+    },
+  });
+
   const therapiesData = getInputTherapySheet.data.values;
 
   const screensInfo = createScreensInfo(data.filter((row) => row[0]));
@@ -147,7 +156,7 @@ export async function GET(req) {
 
     return NextResponse.json(response);
   } catch (e) {
-    console.log('survey-master-router-error:',e);
-    return new NextResponse.json({}, {status:500});
+    console.log('survey-master-router-error:', e);
+    return new NextResponse.json({}, { status: 500 });
   }
 }
