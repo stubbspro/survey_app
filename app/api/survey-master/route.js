@@ -144,6 +144,7 @@ export async function GET(req) {
 
     return NextResponse.json(response);
   } catch (e) {
-    return new NextResponse.json(data, { status: 500 });
+    console.log('survey-master-router-error:',e);
+    return new NextResponse.json({}, {status:500});
   }
 }

@@ -3,8 +3,8 @@ import { Loader2 } from 'lucide-react';
 
 const Loading = () => {
   return (
-    <div>
-      <Loader2 className='ml-2 h-4 w-4 animate-spin' />
+    <div className='w-[100%] h-[100vh] flex items-center justify-center'>
+      <Loader2 className='h-20 w-20 animate-spin' />
     </div>
   );
 };

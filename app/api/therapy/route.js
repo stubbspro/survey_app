@@ -178,10 +178,8 @@ export async function GET(req) {
 
     return NextResponse.json(response);
   } catch (e) {
-    return NextResponse.json({
-      inputSheetRows: null,
-      outputSheetRows: null,
-    });
+    console.log('get-therapy-router-error:',e);
+    return NextResponse.json({});
   }
 }
 
@@ -280,7 +278,7 @@ export async function PUT(req) {
 
     return NextResponse.json({ message: 'ok' });
   } catch (e) {
-    console.log('error', e);
+    console.log('put-therapy-router-error:',e);
     return NextResponse.json({ message: 'not ok' });
   }
 }

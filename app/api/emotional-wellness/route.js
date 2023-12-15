@@ -34,7 +34,7 @@ async function updateSpreadSheetAfterFirstScreen({
       },
     });
   } catch (e) {
-    console.log(e);
+    console.log('updateSpreadSheetAfterFirstScreen-error:',e);
   }
 }
 
@@ -123,7 +123,7 @@ async function updateSpreadSheetAfterConditionScreen({
     const rangeString = `${range}!${getColumnName(screen + 1)}${userId}`;
     await updateCellValue(googleSheets, rangeString, timeSpent, spreadsheetId);
   } catch (e) {
-    console.log(e);
+    console.log('updateSpreadSheetAfterConditionScreen', e);
   }
 }
 
@@ -160,7 +160,7 @@ export async function POST(req) {
 
     return NextResponse.json({ message: 'ok' });
   } catch (e) {
-    console.log(e);
+    console.log('emotional-welness-error:', e);
     return NextResponse.json({ message: 'not ok' });
   }
 }
