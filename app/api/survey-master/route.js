@@ -1,3 +1,4 @@
+import path from 'path';
 import { NextResponse } from 'next/server';
 import { google } from 'googleapis';
 import {
@@ -11,8 +12,10 @@ import { createHeaders } from '@/app/utils/createHeaders';
 import { checkAndCreateSheet } from '@/app/utils/checkAndCreateSheet';
 
 async function getMasterGoogleSpreadSheetRows(route) {
+  const jsonPath = path.join(process.cwd(), 'credentials.json');
+
   const auth = new google.auth.GoogleAuth({
-    keyFile: 'credentials.json',
+    keyFile: jsonPath,
     scopes: 'https://www.googleapis.com/auth/spreadsheets',
   });
 
