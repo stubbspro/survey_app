@@ -19,7 +19,9 @@ module.exports = {
       colors: {
         'dark-blue': 'var(--dark-blue)',
         'content-wrapper-bg': 'var(--content-wrapper-bg)',
-        'bg-blur': 'var( --bg-blur)',
+        'bg-blur': 'var(--bg-blur)',
+        'therapy-button-bg': '#F1F5F9',
+        timer: 'var(--timer-color)',
         border: 'var(--border)',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
