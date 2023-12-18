@@ -6,18 +6,15 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
-  AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { Button } from '../ui/button';
 
-const Alert = ({ open, setOpen, time }) => {
+const Alert = ({ open, setOpen, text }) => {
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogDescription className='text-[16px]'>
-            You cannot go to the next step, the minimum time for an answer is{' '}
-            {time} seconds
+            {text}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className='justify-center sm:justify-center'>

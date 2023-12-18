@@ -10,7 +10,7 @@ const CustomFormField = ({ type, field, customField }) => {
   const { register, setValue, getValues, trigger } = useFormContext();
   switch (type) {
     case 'fill-in':
-      return <Input {...field} />;
+      return <Input className='max-w-[340px]' {...field} />;
     case 'single-select':
     case 'condition':
       return (

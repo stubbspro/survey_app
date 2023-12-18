@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import FormBuilder from '@/components/FormBuilder';
 import updateResultSpreadsheet from '@/app/services/updateResultSpreadsheet';
@@ -15,7 +15,6 @@ const ClientForm = ({ data, userId, surveySpreadsheetId, screensInfo }) => {
   const [formData, setFormData] = useState(data);
   const [currentScreensInfo, setCurrentScreensInfo] = useState(screensInfo);
   const [timer, setTimer] = useState(currentScreensInfo[screen]?.minTime);
-  const [screenTimer, setScreenTimer] = useState(0);
   const [currentTherapyId, setCurrentTherapyId] = useState(null);
   const [therapiesLoaded, setTherapiesLoaded] = useState(false);
   const [totalScreens, setTotalScreens] = useState(Object.keys(data).length);
@@ -23,9 +22,11 @@ const ClientForm = ({ data, userId, surveySpreadsheetId, screensInfo }) => {
   const [loading, setLoading] = useState(false);
   const [selectedCondition, setSelectedCondition] = useState(null);
   const [alertOpen, setAlertOpen] = useState(false);
+  const [formErrorAlertOpen, setFormErrorAlertOpen] = useState(false);
   const [currentUserId, setCurrentUserId] = useState(userId);
   const [currentSurveySpreadsheetId, setCurrentSurveySpreadsheetId] =
     useState(surveySpreadsheetId);
+  const screenTimerRef = useRef(0);
 
   const formValidationSchema = generateFormValidationSchema(formData);
 
@@ -47,7 +48,7 @@ const ClientForm = ({ data, userId, surveySpreadsheetId, screensInfo }) => {
       if (currentScreensInfo[screen].questionType !== 'therapy') {
         await updateResultSpreadsheet({
           screen: +screen,
-          timeSpent: screenTimer,
+          timeSpent: screenTimerRef.current,
           userId: currentUserId,
           spreadsheetId: currentSurveySpreadsheetId,
           answers: data,
@@ -99,7 +100,7 @@ const ClientForm = ({ data, userId, surveySpreadsheetId, screensInfo }) => {
 
           await updateTherapiesSpreadsheet({
             screen: +screen,
-            timeSpent: screenTimer,
+            timeSpent: screenTimerRef.current,
             userId: currentUserId,
             spreadsheetId: currentSurveySpreadsheetId,
             currentTherapy,
@@ -113,6 +114,7 @@ const ClientForm = ({ data, userId, surveySpreadsheetId, screensInfo }) => {
       }
       setScreen(screen + 1);
     } catch (error) {
+      console.log(error);
     } finally {
       setLoading(false);
     }
@@ -156,13 +158,19 @@ const ClientForm = ({ data, userId, surveySpreadsheetId, screensInfo }) => {
   }, [screen, currentScreensInfo, finish]);
 
   useEffect(() => {
-    setScreenTimer(0);
+    screenTimerRef.current = 0;
     const intervalId = setInterval(() => {
-      setScreenTimer((prevScreenTimer) => prevScreenTimer + 1);
+      screenTimerRef.current += 1;
     }, 1000);
 
     return () => clearInterval(intervalId);
   }, [screen]);
+
+  useEffect(() => {
+    if (Object.keys(form.formState.errors).length > 0) {
+      setFormErrorAlertOpen(true);
+    }
+  }, [form.formState.errors]);
 
   return (
     <>
@@ -179,16 +187,27 @@ const ClientForm = ({ data, userId, surveySpreadsheetId, screensInfo }) => {
           buttonText={screen === 1 ? 'Continue' : 'Next'}
         />
       )}
-      {(!finish && timer) > 0 && (
-        <p className='flex justify-center mt-[13px] text-timer text-[14px]'>
-          {timer} seconds to activate the next step
-        </p>
-      )}
-
+      <div className='h-[21px] mt-[13px]'>
+        {(!finish && timer) > 0 && (
+          <p className='flex justify-center text-timer text-[14px]'>
+            {timer} seconds to activate the next step
+          </p>
+        )}
+      </div>
       <Alert
         open={alertOpen}
         setOpen={setAlertOpen}
-        time={currentScreensInfo[screen]?.minTime}
+        text={`You cannot go to the next step, the minimum time for an answer is 
+        ${currentScreensInfo[screen]?.minTime} seconds`}
+      />
+      <Alert
+        open={formErrorAlertOpen}
+        setOpen={setFormErrorAlertOpen}
+        text={
+          currentScreensInfo[screen]?.questionType === 'therapy'
+            ? 'Please select a rating for therapy'
+            : 'Please fill in all fields to continue'
+        }
       />
     </>
   );

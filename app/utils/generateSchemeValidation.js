@@ -5,9 +5,15 @@ const getFieldValidation = (field) => {
     case 'fill-in':
     case 'single-select':
     case 'condition':
-      return z.string().min(1, {
-        message: `${field.label} required`,
-      });
+      return z
+        .string()
+        .trim()
+        .min(1, {
+          message: `${field.label} required`,
+        });
+    case 'therapy-assessment-buttons':
+      return z.number();
+
     default:
       return null;
   }

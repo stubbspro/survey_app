@@ -79,15 +79,6 @@ async function getMasterGoogleSpreadSheetRows(route) {
     ? outputData.slice(1, outputData.length).length
     : 0;
 
-  await googleSheets.spreadsheets.values.append({
-    spreadsheetId: surveySpreadsheetId,
-    range: OUTPUT_RESULTS_SHEET_NAME,
-    valueInputOption: 'RAW',
-    resource: {
-      values: [[+lastUserNumber === 0 ? 1 : +lastUserNumber + 1]],
-    },
-  });
-
   const therapiesData = getInputTherapySheet.data.values;
 
   const screensInfo = createScreensInfo(data.filter((row) => row[0]));
@@ -109,6 +100,15 @@ async function getMasterGoogleSpreadSheetRows(route) {
       },
     });
   }
+
+  await googleSheets.spreadsheets.values.append({
+    spreadsheetId: surveySpreadsheetId,
+    range: OUTPUT_RESULTS_SHEET_NAME,
+    valueInputOption: 'RAW',
+    resource: {
+      values: [[+lastUserNumber === 0 ? 1 : +lastUserNumber + 1]],
+    },
+  });
 
   const transformedData = data
     .slice(1, data.length) // REMOVE HEADERS
