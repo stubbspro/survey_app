@@ -23,13 +23,13 @@ const CustomFormField = ({ type, field, customField }) => {
             return (
               <FormItem key={`${field.questionId}-${option.value}`}>
                 <FormControl>
-                  <div className='flex'>
+                  <div className='flex hover:cursor-pointer'>
                     <RadioGroupItem
                       value={option.value}
                       id={`${field.questionId}-${option.value}-${customField?.label}`}
                     />
                     <Label
-                      className='ml-2 text-[14px] leading-[14px] sm:text-[16px]'
+                      className='ml-2 text-[14px] leading-[14px] sm:text-[16px] hover:cursor-pointer'
                       htmlFor={`${field.questionId}-${option.value}-${customField?.label}`}
                     >
                       {option.label}

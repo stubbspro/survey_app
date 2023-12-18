@@ -116,6 +116,7 @@ const ClientForm = ({ data, userId, surveySpreadsheetId, screensInfo }) => {
     } catch (error) {
       console.log(error);
     } finally {
+      form.reset();
       setLoading(false);
     }
   };
@@ -187,7 +188,7 @@ const ClientForm = ({ data, userId, surveySpreadsheetId, screensInfo }) => {
           buttonText={screen === 1 ? 'Continue' : 'Next'}
         />
       )}
-      <div className='h-[21px] mt-[13px]'>
+      <div className='min-h-[21px] mt-[13px]'>
         {(!finish && timer) > 0 && (
           <p className='flex justify-center text-timer text-[14px]'>
             {timer} seconds to activate the next step
